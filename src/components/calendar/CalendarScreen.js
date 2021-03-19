@@ -8,6 +8,7 @@ import moment from 'moment';
 import { messages } from '../helpers/calendar-messages-es'; //cambio de idioma
 
 import 'moment/locale/es';
+import { CalendarModal } from './CalendarModal';
 moment.locale('es') //cambiar el idioma a moment
 
 const localizer = momentLocalizer(moment) // or globalizeLocalizer
@@ -79,6 +80,8 @@ export const CalendarScreen = () => {
                     event: CalendarEvent //enviamos el evento de esta forma 
                 }}
             />  
+
+            <CalendarModal/>
         </div>
     )
 }
