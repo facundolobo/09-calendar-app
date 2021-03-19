@@ -5,6 +5,7 @@ import moment from 'moment';
 import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiCloseModal } from '../../actions/ui';
+import { eventAddNew } from '../../actions/events';
 //import { uiOpenModal } from '../../actions/ui';
 const customStyles = {
     content : {
@@ -102,6 +103,11 @@ export const CalendarModal = () => {
         }
 
         //TODO: realizar grabacion
+        console.log(formValue);
+        dispatch(eventAddNew({
+            ...formValue,
+            id: new Date().getTime() //agregamosun id fictisio 
+        }))
 
         setTilteValid(true);
         closeModal();

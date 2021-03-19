@@ -11,6 +11,8 @@ import 'moment/locale/es';
 import { CalendarModal } from './CalendarModal';
 import { useDispatch } from 'react-redux';
 import { uiOpenModal } from '../../actions/ui';
+import { eventAddNew } from '../../actions/events';
+import { AddNewFab } from '../ui/AddNewFab';
 moment.locale('es') //cambiar el idioma a moment
 
 const localizer = momentLocalizer(moment) // or globalizeLocalizer
@@ -38,15 +40,14 @@ export const CalendarScreen = () => {
     //funcion cuando hace doble click
     const onDoubleClick=(e)=>{ //e recibe el evento
         //console.log('abrir modal');
-        dispatch( uiOpenModal() )
+        dispatch( uiOpenModal() );
     }
     
     //funcion cuando hace un click
-   
-    
     const onSelectEvent=(e)=>{ //e recibe el evento
-        //console.log(e);
         
+        dispatch( eventAddNew(e) ); //
+        dispatch( uiOpenModal() ); //activamos la nota
     }
 
     //avisa en que vista estoy mes dia semana
@@ -88,7 +89,12 @@ export const CalendarScreen = () => {
                 }}
             />  
 
+                <AddNewFab/>
+
             <CalendarModal/>
+
+
+
         </div>
     )
 }
