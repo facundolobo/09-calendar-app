@@ -3,7 +3,8 @@ html, body{
     width: 100vw;
 }
 
-.calendar-screen{
+/* //para que se muestre bien los meses */
+.calendar-screen{ 
     display: flex;
     flex-flow: column;
     height: 100vh;
