@@ -3,6 +3,9 @@ import Modal from 'react-modal';
 import DateTimePicker from 'react-datetime-picker';
 import moment from 'moment';
 import Swal from 'sweetalert2';
+import { useDispatch, useSelector } from 'react-redux';
+import { uiCloseModal } from '../../actions/ui';
+//import { uiOpenModal } from '../../actions/ui';
 const customStyles = {
     content : {
       top                   : '50%',
@@ -52,8 +55,13 @@ export const CalendarModal = () => {
     //--
 
     //funcion que cierra el modal
+    const {modalOpen} = useSelector(state => state.ui) //para saber el estado de modalOpen redux
+    const dispatch = useDispatch(); //lo necesitamos para agregar el dispath a redux
+    
     const closeModal = ()=>{
-        //console.log('closing...');
+        //console.log('cerrar modal');
+        dispatch( uiCloseModal() )
+        
         //setIsOpen(false);//cambio su valor
     }
 
@@ -101,7 +109,7 @@ export const CalendarModal = () => {
 
     return (
         <Modal
-            isOpen={true} // muestra el modal, si esta true se muestra
+            isOpen={modalOpen} // muestra el modal, si esta true se muestra
             //onAfterOpen={afterOpenModal}
             onRequestClose={closeModal}
             style={customStyles} //agrega estilos creados aqui

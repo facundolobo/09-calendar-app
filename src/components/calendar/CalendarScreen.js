@@ -9,37 +9,44 @@ import { messages } from '../helpers/calendar-messages-es'; //cambio de idioma
 
 import 'moment/locale/es';
 import { CalendarModal } from './CalendarModal';
+import { useDispatch } from 'react-redux';
+import { uiOpenModal } from '../../actions/ui';
 moment.locale('es') //cambiar el idioma a moment
 
 const localizer = momentLocalizer(moment) // or globalizeLocalizer
-    //creamos un evento apra enviar al calendario
-    const event = [{
-        title: 'Cumpleaños del jefe',
-        start: moment().toDate(), //es como new Date() // inicio del evento
-        end: moment().add(2, 'hours').toDate(),  //fin del evento mas 2 horas
-        bgcolor: '#fafafa',
-        notes: 'comprar el pastel',
-        user: { //usuario que hizo la nota 
-            _id:'123',
-            name: 'Fernando'
-        }
-    }]
-    //-
-    
+//creamos un evento apra enviar al calendario
+const event = [{
+    title: 'Cumpleaños del jefe',
+    start: moment().toDate(), //es como new Date() // inicio del evento
+    end: moment().add(2, 'hours').toDate(),  //fin del evento mas 2 horas
+    bgcolor: '#fafafa',
+    notes: 'comprar el pastel',
+    user: { //usuario que hizo la nota 
+        _id:'123',
+        name: 'Fernando'
+    }
+}]
+//-
+
 
 export const CalendarScreen = () => {
-    
+
+    const dispatch = useDispatch(); //lo necesitamos para agregar el dispath a redux
     //buscamos la vista pasada sino usamos la del mes--- ayuda a cuando recargamos la pagina se quede donde la dejamos
     const [lastView, setViewLastView] = useState(localStorage.getItem('lastView') || 'month'); 
     
     //funcion cuando hace doble click
     const onDoubleClick=(e)=>{ //e recibe el evento
-        console.log(e);
+        //console.log('abrir modal');
+        dispatch( uiOpenModal() )
     }
-
+    
     //funcion cuando hace un click
+   
+    
     const onSelectEvent=(e)=>{ //e recibe el evento
-        console.log(e);
+        //console.log(e);
+        
     }
 
     //avisa en que vista estoy mes dia semana
