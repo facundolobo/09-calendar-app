@@ -5,7 +5,7 @@ import moment from 'moment';
 import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiCloseModal } from '../../actions/ui';
-import { eventAddNew, eventClearActiveEvent } from '../../actions/events';
+import { eventAddNew, eventClearActiveEvent, eventUpdated } from '../../actions/events';
 //import { uiOpenModal } from '../../actions/ui';
 const customStyles = {
     content : {
@@ -126,17 +126,26 @@ export const CalendarModal = () => {
             return setTilteValid(false);//cambia el estado del titulo valido
         }
 
+        if ( activeEvent ){
+            
+            dispatch( eventUpdated( formValue ) ) //si activeEvent es true es una evento a actualizar sino es un nuevo evento
+        
+        }else {
+            
+            dispatch(eventAddNew({
+                ...formValue,
+                id: new Date().getTime(), //agregamosun id fictisio
+                user: {
+                    _id: '123',
+                    name: 'Fernando'
+                } 
+            }))
+            
+        }
+
         //TODO: realizar grabacion
         console.log(formValue);
 
-        dispatch(eventAddNew({
-            ...formValue,
-            id: new Date().getTime(), //agregamosun id fictisio
-            user: {
-                _id: '123',
-                name: 'Fernando'
-            } 
-        }))
 
         setTilteValid(true);
         closeModal();

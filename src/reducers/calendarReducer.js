@@ -4,6 +4,7 @@ import { types } from '../types/types';
 
 const inicialState = {
     events: [{
+        id: new Date().getTime(),
         title: 'Cumpleaños del jefe',
         start: moment().toDate(), //es como new Date() // inicio del evento
         end: moment().add(2, 'hours').toDate(),  //fin del evento mas 2 horas
@@ -39,6 +40,14 @@ export const calendarReducer = ( state = inicialState, action ) => {
             return{
                 ...state,
                 activeEvent: null
+            }
+        
+        case types.eventUpdated: //actualizar un evento
+            return{
+                ...state,
+                events: state.events.map( //busca un id igual al evento enviando y si lo encuentra lo devuelve actualziado sino devuelve el mismo
+                    e => (e.id === action.payload.id) ? action.payload : e
+                )
             }
             
         default:
