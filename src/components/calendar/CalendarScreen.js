@@ -11,8 +11,9 @@ import 'moment/locale/es';
 import { CalendarModal } from './CalendarModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiOpenModal } from '../../actions/ui';
-import { eventAddNew, eventSetActive } from '../../actions/events';
+import { eventClearActiveEvent, eventSetActive } from '../../actions/events';
 import { AddNewFab } from '../ui/AddNewFab';
+import { DeleteEventFab } from '../ui/DeleteEventFab';
 moment.locale('es') //cambiar el idioma a moment
 
 const localizer = momentLocalizer(moment) // or globalizeLocalizer
@@ -35,6 +36,7 @@ export const CalendarScreen = () => {
 
     const dispatch = useDispatch(); //lo necesitamos para agregar el dispath a redux
 
+    const {activeEvent} = useSelector(state => state.calendar) //para saber el estado de modalOpen redux
 
     //TODO leer del store, los eventos "las notas"
     const {events} = useSelector(state => state.calendar) //para saber el estado de modalOpen redux
@@ -57,6 +59,10 @@ export const CalendarScreen = () => {
         //dispatch( uiOpenModal() ); //activamos la nota
         dispatch( eventSetActive(e) ); //
         
+    }
+    //sacar el boton eliminar cuando aga click en otro lugar
+    const onSelectSlot = (e) => {
+        dispatch(eventClearActiveEvent()) 
     }
 
     //avisa en que vista estoy mes dia semana
@@ -91,6 +97,9 @@ export const CalendarScreen = () => {
                 eventPropGetter={eventStyleGetter} //enviamos un stylo
                 onDoubleClickEvent={onDoubleClick} //enviamos un evento doble click
                 onSelectEvent={onSelectEvent} //enviamos un evento un click
+                onSelectSlot={onSelectSlot}
+                selectable={ true }
+
                 onView={onViewChange}
                 view={lastView}
                 components = {{
@@ -99,11 +108,14 @@ export const CalendarScreen = () => {
             />  
 
                 <AddNewFab/>
+                {
+                    activeEvent &&
+                    <DeleteEventFab/>
+                }
 
             <CalendarModal/>
 
-
-
+            
         </div>
     )
 }

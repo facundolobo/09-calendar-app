@@ -56,12 +56,12 @@ html, body{
     padding: 10px;
 }
 
-/*DatePiker*/
-.react-datetime-picker input:focus{
+/* Datepicker */
+.react-datetime-picker input:focus {
     outline: none;
 }
 
-.react-datetime-picker__wrapper{
+.react-datetime-picker__wrapper {
     border: 0px solid gray !important;
 }
 
@@ -74,4 +74,13 @@ html, body{
     padding: 25px;
     position: fixed;
     right: 25px;
+}
+
+/*FABS*/
+.fab-danger {
+    bottom: 25px;
+    padding: 10px;
+    position: fixed;
+    
+    left: 25px; /*posicion del boton en la pantala*/
 }

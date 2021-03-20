@@ -1,5 +1,4 @@
 import moment from 'moment';
-import React from 'react'
 import { types } from '../types/types';
 
 const inicialState = {
@@ -48,6 +47,15 @@ export const calendarReducer = ( state = inicialState, action ) => {
                 events: state.events.map( //busca un id igual al evento enviando y si lo encuentra lo devuelve actualziado sino devuelve el mismo
                     e => (e.id === action.payload.id) ? action.payload : e
                 )
+            }
+        
+        case types.eventDeleted: //eliminar un evento
+            return{
+                ...state,
+                events: state.events.filter( //filtra todos los eventos y no devuelve el que este en active, porque ese es el que se elimino
+                    e => (e.id !== state.activeEvent.id)
+                ),
+                activeEvent: null //quitamos la nota eliminada de activeEvent 
             }
             
         default:

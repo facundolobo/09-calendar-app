@@ -58,9 +58,11 @@ export const CalendarModal = () => {
             const {activeEvent} = useSelector(state => state.calendar) //para saber el estado de modalOpen redux
             
             useEffect(() => {
-                console.log(activeEvent)
+                //console.log(activeEvent)
                 if(activeEvent){ // esto soluciona si fuera null, ya que no puedo enviarle null al setFormValue
                     setFormValue(activeEvent)
+                } else{
+                    setFormValue(initEvent) //si no esta activo entonces inicializa de nuevo 
                 }
             }, [activeEvent])
         //--
@@ -144,7 +146,7 @@ export const CalendarModal = () => {
         }
 
         //TODO: realizar grabacion
-        console.log(formValue);
+        //console.log(formValue);
 
 
         setTilteValid(true);
@@ -163,7 +165,7 @@ export const CalendarModal = () => {
             className="modal" 
             overlayClassName="modal-fondo"
         >
-            <h1> Nuevo evento </h1>
+            <h1> {(activeEvent) ? 'Editar Evento' : 'Nuevo evento'} </h1>
             <hr />
             <form 
                 className="container"
