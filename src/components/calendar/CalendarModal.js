@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Modal from 'react-modal';
 import DateTimePicker from 'react-datetime-picker';
 import moment from 'moment';
 import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiCloseModal } from '../../actions/ui';
-import { eventAddNew } from '../../actions/events';
+import { eventAddNew, eventClearActiveEvent } from '../../actions/events';
 //import { uiOpenModal } from '../../actions/ui';
 const customStyles = {
     content : {
@@ -25,6 +25,16 @@ const now= moment().minute(0).second(0).add(1,'hours');
 
 const nowPlus1= now.clone().add(1, 'hours'); //funcion para clonar
 
+//valor inicial del evento
+const initEvent={
+    title: '',
+    notes: '',
+    start: now.toDate(),
+    end: nowPlus1.toDate()
+}
+
+
+
 export const CalendarModal = () => {
     
     //TODO: cerrar modal
@@ -35,15 +45,26 @@ export const CalendarModal = () => {
 
     const [titleValid, setTilteValid] = useState(true) //para colocar la indicacion de campo titulo
 
+
     //variables del formulario
-        const [formValue, setFormValue] = useState({
-            title: 'Evento',
-            notes: '',
-            start: now.toDate(),
-            end: nowPlus1.toDate()
-        })
+    
+    
+    
+    const [formValue, setFormValue] = useState(initEvent)
 
         const { notes, title, start ,end } =formValue;
+
+        //efecto que esta pendiente de lsoc ambios de activeEvent" 
+            const {activeEvent} = useSelector(state => state.calendar) //para saber el estado de modalOpen redux
+            
+            useEffect(() => {
+                console.log(activeEvent)
+                if(activeEvent){ // esto soluciona si fuera null, ya que no puedo enviarle null al setFormValue
+                    setFormValue(activeEvent)
+                }
+            }, [activeEvent])
+        //--
+
 
         //cambia valor 
         const handleInputChange = ({target}) =>{ //solo me importa target
@@ -62,6 +83,9 @@ export const CalendarModal = () => {
     const closeModal = ()=>{
         //console.log('cerrar modal');
         dispatch( uiCloseModal() )
+        dispatch(eventClearActiveEvent()); //limpiar el activeEvent
+        setFormValue(initEvent) //restablecemos el formulario
+
         
         //setIsOpen(false);//cambio su valor
     }
@@ -104,9 +128,14 @@ export const CalendarModal = () => {
 
         //TODO: realizar grabacion
         console.log(formValue);
+
         dispatch(eventAddNew({
             ...formValue,
-            id: new Date().getTime() //agregamosun id fictisio 
+            id: new Date().getTime(), //agregamosun id fictisio
+            user: {
+                _id: '123',
+                name: 'Fernando'
+            } 
         }))
 
         setTilteValid(true);

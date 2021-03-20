@@ -9,45 +9,54 @@ import { messages } from '../helpers/calendar-messages-es'; //cambio de idioma
 
 import 'moment/locale/es';
 import { CalendarModal } from './CalendarModal';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { uiOpenModal } from '../../actions/ui';
-import { eventAddNew } from '../../actions/events';
+import { eventAddNew, eventSetActive } from '../../actions/events';
 import { AddNewFab } from '../ui/AddNewFab';
 moment.locale('es') //cambiar el idioma a moment
 
 const localizer = momentLocalizer(moment) // or globalizeLocalizer
 //creamos un evento apra enviar al calendario
-const event = [{
-    title: 'Cumpleaños del jefe',
-    start: moment().toDate(), //es como new Date() // inicio del evento
-    end: moment().add(2, 'hours').toDate(),  //fin del evento mas 2 horas
-    bgcolor: '#fafafa',
-    notes: 'comprar el pastel',
-    user: { //usuario que hizo la nota 
-        _id:'123',
-        name: 'Fernando'
-    }
-}]
+// const event = [{
+//     title: 'Cumpleaños del jefe',
+//     start: moment().toDate(), //es como new Date() // inicio del evento
+//     end: moment().add(2, 'hours').toDate(),  //fin del evento mas 2 horas
+//     bgcolor: '#fafafa',
+//     notes: 'comprar el pastel',
+//     user: { //usuario que hizo la nota 
+//         _id:'123',
+//         name: 'Fernando'
+//     }
+// }]
 //-
 
 
 export const CalendarScreen = () => {
 
     const dispatch = useDispatch(); //lo necesitamos para agregar el dispath a redux
+
+
+    //TODO leer del store, los eventos "las notas"
+    const {events} = useSelector(state => state.calendar) //para saber el estado de modalOpen redux
+    
+    // console.log('ver los eventos')
+    // console.log(events)
+
+
     //buscamos la vista pasada sino usamos la del mes--- ayuda a cuando recargamos la pagina se quede donde la dejamos
     const [lastView, setViewLastView] = useState(localStorage.getItem('lastView') || 'month'); 
     
     //funcion cuando hace doble click
     const onDoubleClick=(e)=>{ //e recibe el evento
         //console.log('abrir modal');
-        dispatch( uiOpenModal() );
+        dispatch( uiOpenModal() );//activamos la nota
     }
     
     //funcion cuando hace un click
     const onSelectEvent=(e)=>{ //e recibe el evento
+        //dispatch( uiOpenModal() ); //activamos la nota
+        dispatch( eventSetActive(e) ); //
         
-        dispatch( eventAddNew(e) ); //
-        dispatch( uiOpenModal() ); //activamos la nota
     }
 
     //avisa en que vista estoy mes dia semana
@@ -75,7 +84,7 @@ export const CalendarScreen = () => {
             {/*calendario */}
             <Calendar 
                 localizer={localizer}
-                events={event}
+                events={events}
                 startAccessor="start"
                 endAccessor="end"
                 messages={messages} //enviamos el cambio de idioma
