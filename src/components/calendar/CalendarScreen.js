@@ -5,7 +5,7 @@ import { CalendarEvent } from './CalendarEvent';
 import 'react-big-calendar/lib/css/react-big-calendar.css' //css para que se vea bien
 import {Calendar, momentLocalizer} from 'react-big-calendar';
 import moment from 'moment';
-import { messages } from '../helpers/calendar-messages-es'; //cambio de idioma
+//import { messages } from '../helpers/calendar-messages-es'; //cambio de idioma
 
 import 'moment/locale/es';
 import { CalendarModal } from './CalendarModal';
@@ -14,6 +14,7 @@ import { uiOpenModal } from '../../actions/ui';
 import { eventClearActiveEvent, eventSetActive } from '../../actions/events';
 import { AddNewFab } from '../ui/AddNewFab';
 import { DeleteEventFab } from '../ui/DeleteEventFab';
+import { messages } from '../../helpers/calendar-messages-es';
 moment.locale('es') //cambiar el idioma a moment
 
 const localizer = momentLocalizer(moment) // or globalizeLocalizer
