@@ -36,7 +36,7 @@ export const startRegister = (name, email, password) =>{
             
             localStorage.setItem('token',body.token ); //guarda el token en el navegador
             localStorage.setItem('token-init-date', new Date().getTime() );//guardamos la hora de guardado de token
-            console.log(body)
+            //console.log(body)
             dispatch( login({
                 uid: body.uid,
                 name: body.name,

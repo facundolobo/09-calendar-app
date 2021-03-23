@@ -12,15 +12,15 @@ export const LoginScreen = () => {
 // para login 
     const  [formLoginValues, handleLoginInputChange] = useForm( {
 
-        lEmail: 'fernando@gmail.com',
-        lPassword: '123456'
+        lEmail: '',
+        lPassword: ''
     } );
     
     const { lEmail, lPassword } = formLoginValues;
 
     const handleLogin = ( e ) => { 
         e.preventDefault();
-        
+        //console.log(lEmail, lPassword )
         dispatch( startLogin( lEmail, lPassword ) );
     }
 //--

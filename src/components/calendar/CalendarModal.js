@@ -18,10 +18,13 @@ const customStyles = {
     }
  };
 
-Modal.setAppElement('#root');
+ if(process.env.NODE_ENV !== 'test'){ //lo ahcemos xq da un error al aher el test
+     Modal.setAppElement('#root');
+     
+ }
 
-//momento actual
-const now= moment().minute(0).second(0).add(1,'hours');
+//momento 
+const now= moment().minutes(0).seconds(0).add(1,'hours');
 
 const nowPlus1= now.clone().add(1, 'hours'); //funcion para clonar
 
@@ -117,6 +120,7 @@ export const CalendarModal = () => {
 
         const momentStart = moment( start );
         const momentEnd = moment( end );
+        
         //validacioon para que la fecha fin no sea menor que la inicio
         if ( momentStart.isSameOrAfter(momentEnd) ){
             return Swal.fire('Error','La fecha fin debe ser mayor a la decha inicio','error')
@@ -157,6 +161,7 @@ export const CalendarModal = () => {
             //de styles.css
             className="modal" 
             overlayClassName="modal-fondo"
+            ariaHideApp={!process.env.NODE_ENV === 'test'}
         >
             <h1> {(activeEvent) ? 'Editar Evento' : 'Nuevo evento'} </h1>
             <hr />
