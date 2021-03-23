@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navbar } from '../ui/Navbar';
 import { CalendarEvent } from './CalendarEvent';
 //calendario
@@ -11,7 +11,7 @@ import 'moment/locale/es';
 import { CalendarModal } from './CalendarModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiOpenModal } from '../../actions/ui';
-import { eventClearActiveEvent, eventSetActive } from '../../actions/events';
+import { eventClearActiveEvent, eventSetActive, eventStartLoading } from '../../actions/events';
 import { AddNewFab } from '../ui/AddNewFab';
 import { DeleteEventFab } from '../ui/DeleteEventFab';
 import { messages } from '../../helpers/calendar-messages-es';
@@ -41,6 +41,7 @@ export const CalendarScreen = () => {
 
     //TODO leer del store, los eventos "las notas"
     const {events} = useSelector(state => state.calendar) //para saber el estado de modalOpen redux
+    const {uid} = useSelector(state => state.auth) //para saber el estado de modalOpen redux
     
     // console.log('ver los eventos')
     // console.log(events)
@@ -49,6 +50,12 @@ export const CalendarScreen = () => {
     //buscamos la vista pasada sino usamos la del mes--- ayuda a cuando recargamos la pagina se quede donde la dejamos
     const [lastView, setViewLastView] = useState(localStorage.getItem('lastView') || 'month'); 
     
+    //apra carar los eventos
+    useEffect(() => {
+        dispatch(eventStartLoading());
+    }, [dispatch])
+
+
     //funcion cuando hace doble click
     const onDoubleClick=(e)=>{ //e recibe el evento
         //console.log('abrir modal');
@@ -74,7 +81,7 @@ export const CalendarScreen = () => {
     const eventStyleGetter =(event, start, end, isSelected)=>{
         //console.log(event, start, end, isSelected)
         const style = {
-            backgroundColor: '#367CF7',
+            backgroundColor: (uid === event.user._id ) ? '#367CF7': '#465660',//para ver colores diferentes de las notas propias
             borderRadius: '0px',
             opacity: 0.8,
             display: 'block',

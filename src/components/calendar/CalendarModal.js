@@ -5,7 +5,7 @@ import moment from 'moment';
 import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiCloseModal } from '../../actions/ui';
-import { eventAddNew, eventClearActiveEvent, eventUpdated } from '../../actions/events';
+import { eventClearActiveEvent, eventStartAddNew, eventStartUpdate } from '../../actions/events';
 //import { uiOpenModal } from '../../actions/ui';
 const customStyles = {
     content : {
@@ -130,18 +130,11 @@ export const CalendarModal = () => {
 
         if ( activeEvent ){
             
-            dispatch( eventUpdated( formValue ) ) //si activeEvent es true es una evento a actualizar sino es un nuevo evento
+            dispatch( eventStartUpdate( formValue ) ) //si activeEvent es true es una evento a actualizar sino es un nuevo evento
         
         }else {
             
-            dispatch(eventAddNew({
-                ...formValue,
-                id: new Date().getTime(), //agregamosun id fictisio
-                user: {
-                    _id: '123',
-                    name: 'Fernando'
-                } 
-            }))
+            dispatch(eventStartAddNew(formValue))
             
         }
 
